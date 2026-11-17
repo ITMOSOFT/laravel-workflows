@@ -1,0 +1,30 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+        dependency-version: ['prefer-lowest', 'prefer-stable']
+    name: PHP ${{ matrix.php }} / ${{ matrix.dependency-version }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, sqlite3, pdo_sqlite
+          coverage: none
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Resolve dependency matrix
+        run: composer update --no-interaction --prefer-dist --${{ matrix.dependency-version }}
+      - name: Run PHPUnit
+        run: composer test
