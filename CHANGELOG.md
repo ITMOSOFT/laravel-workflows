@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.1] - 2026-11-17
+
+### Fixed
+- Reset the workflow step relationship ordering before selecting the final step, ensuring instances are marked completed when they transition to the last defined step.
+
 ## [1.0.0] - 2026-11-17
 
 ### Added

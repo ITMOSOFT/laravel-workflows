@@ -115,7 +115,7 @@ class WorkflowManager
             $mergedContext = array_merge($locked->context ?? [], $context);
             $locked->current_step_key = $targetStepKey;
 
-            $lastStep = $definition->steps()->orderByDesc('step_order')->first();
+            $lastStep = $definition->steps()->reorder()->orderByDesc('step_order')->first();
             if ($lastStep && $lastStep->step_key === $targetStepKey) {
                 $locked->status = 'completed';
                 $locked->completed_at = now();
